@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:12.13
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: user 
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5430:5432
+    # volumes:
+      # - pgdata:/var/lib/postgresql/data  # 挂载卷到容器的数据库数据目录
+    healthcheck:
+      test: pg_isready -U user -d postgres
+      interval: 5s
+      timeout: 2s
+      retries: 5
+  migrate:
+    image: migrate/migrate
+    command: [ "-path", "/migrations", "-database",  "postgresql://user:password@postgres:5432/postgres?sslmode=disable", "up" ]
+    volumes:
+      - ./migrations:/migrations
+    restart: on-failure
+    depends_on:
+      - postgres
+  # node_app:
+  #   build: .
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - postgres
+    
