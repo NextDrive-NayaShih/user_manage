@@ -1,8 +1,5 @@
-const express = require('express');
 const { Pool } = require('pg');
-const jwt = require('jsonwebtoken')
 
-const router = express.Router();
 // PostgreSQL connection setup
 const pool = new Pool({
   user: 'user',
@@ -12,7 +9,6 @@ const pool = new Pool({
   port: 5432 // Docker Compose port
 });
 
-// Controller functions
 const getAllUsers = async (req, res) => {
   try {
     const client = await pool.connect();
@@ -72,10 +68,4 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-// Routes
-router.get('/', getAllUsers);
-router.get('/:id', getUserById);
-router.post('/', addUser);
-router.delete('/:id', deleteUserById);
-
-module.exports = router;
+module.exports = { getAllUsers, getUserById, addUser, deleteUserById };

@@ -1,9 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const usersRouter = require('./routes/users');
-const adminRouter = require('./routes/admin');
-const authMiddleware = require('./middleware/authMiddleware');
+const authMiddleware = require('./middlewares/authMiddleware');
+const adminRoutes = require('./routes/adminRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = 3000;
@@ -11,16 +10,15 @@ const PORT = 3000;
 app.set('secret', 'mysecretkey')
 app.use(bodyParser.json());
 
-// Mount users router
-app.use('/admin', adminRouter);
+// Mount admin routes
+app.use('/admin', adminRoutes);
 
 // Mount the authentication middleware
-app.use(authMiddleware)
+app.use(authMiddleware);
 
-// Mount users router
-app.use('/users', usersRouter);
+// Mount user routes
+app.use('/users', userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-

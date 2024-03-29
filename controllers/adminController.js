@@ -1,7 +1,6 @@
 const express = require('express');
 const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
-const router = express.Router();
 const app = express();
 
 app.set('secret', 'mysecretkey');
@@ -61,8 +60,4 @@ const login = async (req, res) => {
   }
 };
 
-// Routes
-router.post('/signup', signup);
-router.post('/login', login);
-
-module.exports = router;
+module.exports = { signup, login };

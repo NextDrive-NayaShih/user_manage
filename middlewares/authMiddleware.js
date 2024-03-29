@@ -5,7 +5,7 @@ const authMiddleware = (req, res, next) => {
   if (!token) {
     return res.status(403).json({ success: false, message: 'No token provided.' });
   }
-
+  // verify the token in the request header
   jwt.verify(token, 'mysecretkey', (err, decoded) => {
     if (err) {
       return res.status(401).json({ success: false, message: 'Failed to authenticate token.' });
