@@ -18,6 +18,7 @@
   "homepage": "https://github.com/NextDrive-NayaShih/user_manage#readme",
   "dependencies": {
     "express": "^4.19.1",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3"
   }
 }

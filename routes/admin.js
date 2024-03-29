@@ -9,10 +9,10 @@ app.set('secret', 'mysecretkey');
 // PostgreSQL connection setup
 const pool = new Pool({
   user: 'user',
-  host: 'localhost',
+  host: 'db',
   database: 'postgres',
   password: 'password',
-  port: 5430, // Docker Compose port
+  port: 5432, // Docker Compose port
 });
 
 const signup = async (req, res) => {
@@ -39,7 +39,7 @@ const login = async (req, res) => {
 
     if (result.rows.length > 0) {
       var token = jwt.sign(
-        { username }, // payload should be an object
+        { username }, // payload
         app.get('secret'), // secretkey
         { expiresIn: "1d"} // expiresIn
       )

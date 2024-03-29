@@ -6,10 +6,10 @@ const router = express.Router();
 // PostgreSQL connection setup
 const pool = new Pool({
   user: 'user',
-  host: 'localhost',
+  host: 'db',
   database: 'postgres',
   password: 'password',
-  port: 5430, // Docker Compose port
+  port: 5432 // Docker Compose port
 });
 
 // Controller functions
