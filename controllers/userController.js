@@ -1,17 +1,6 @@
-const { Pool } = require('pg');
 
-// PostgreSQL connection setup
-const pool = new Pool({
-  user: 'user',
-  host: 'db',
-  database: 'postgres',
-  password: 'password',
-  port: 5432 // Docker Compose port
-});
-
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (res) => {
   try {
-    const client = await pool.connect();
     const result = await client.query('SELECT * FROM users');
     const users = result.rows;
     res.json(users);
@@ -25,7 +14,6 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   const userId = parseInt(req.params.id);
   try {
-    const client = await pool.connect();
     const result = await client.query('SELECT * FROM users WHERE id = $1', [userId]);
     const user = result.rows[0];
     if (!user) {
@@ -42,7 +30,6 @@ const getUserById = async (req, res) => {
 const addUser = async (req, res) => {
   const { name, nickname, age } = req.body;
   try {
-    const client = await pool.connect();
     const result = await client.query('INSERT INTO users (name, nickname, age) VALUES ($1, $2, $3) RETURNING id', [name, nickname, age]);
     const newUser = {
       id: result.rows[0].id,
@@ -58,7 +45,6 @@ const addUser = async (req, res) => {
 const deleteUserById = async (req, res) => {
   const userId = parseInt(req.params.id);
   try {
-    const client = await pool.connect();
     await client.query('DELETE FROM users WHERE id = $1', [userId]);
     res.json({ message: 'User deleted successfully' });
     client.release();

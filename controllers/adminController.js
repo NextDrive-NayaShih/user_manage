@@ -1,59 +1,41 @@
 const express = require('express');
-const { Pool } = require('pg');
-const jwt = require('jsonwebtoken');
 const app = express();
+const jwt = require('jsonwebtoken');
+const AdminsModel = require('../models/admins.model'); // Import the AdminsModel
 
 app.set('secret', 'mysecretkey');
 
-// PostgreSQL connection setup
-const pool = new Pool({
-  user: 'user',
-  host: 'db',
-  database: 'postgres',
-  password: 'password',
-  port: 5432, // Docker Compose port
-});
-
 const signup = async (req, res) => {
-  const { username, password } = req.body;
   try {
-    const client = await pool.connect();
-    const result = await client.query('INSERT INTO admins (username, password) VALUES ($1, $2) RETURNING id', [username, password]);
+    const adminId = await AdminsModel.insert(req.body);
     const newAdmin = {
-      id: result.rows[0].id,
+      id: adminId,
     };
     res.json(newAdmin);
-    client.release();
   } catch (err) {
     console.error('Error executing query', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-const login = async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const client = await pool.connect();
-    const result = await client.query('SELECT * FROM admins WHERE username = $1 AND password = $2', [username, password]);
 
+const login = async (req, res) => {
+  try {
+    const result = await AdminsModel.login(req.body);
     if (result.rows.length > 0) {
-      var token = jwt.sign(
-        { username }, // payload
+      // If a matching record is found, generate a JWT token
+      const token = jwt.sign(
+        { username },
         app.get('secret'), // secretkey
-        { expiresIn: "1d"} // expiresIn
-      )
-      res.json({
+        { expiresIn: "1d" } // expiresIn
+      );
+      return {
         success: true,
-        message: 'Success to login.',
         token: token
-      })
+      };
     } else {
-      res.json({
-        success: false,
-        message: 'Failed to login.',
-      })
+      return { success: false, message: 'Invalid username or password' };
     }
-    client.release();
   } catch (err) {
     console.error('Error executing query', err);
     res.status(500).json({ error: 'Internal server error' });
