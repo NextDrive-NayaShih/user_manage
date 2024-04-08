@@ -1,10 +1,10 @@
-const UsersModel = require('../models/users.model'); // Import the AdminsModel
-const express = require('express');
+import UsersModel from '../models/users.model.js';
+import express from 'express';
 const app = express();
 
 app.set('secret', 'mysecretkey');
 
-const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
     const result = await UsersModel.selectAll();
     console.info("result:", result);
@@ -17,7 +17,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-const getUserById = async (req, res) => {
+export const getUserById = async (req, res) => {
   const userId = parseInt(req.params.id);
   try {
     const result = await UsersModel.selectById(userId);
@@ -32,7 +32,7 @@ const getUserById = async (req, res) => {
   }
 };
 
-const addUser = async (req, res) => {
+export const addUser = async (req, res) => {
   try {
     const result = await UsersModel.insert(req.body);
     const newUser = {
@@ -45,7 +45,7 @@ const addUser = async (req, res) => {
   }
 };
 
-const deleteUserById = async (req, res) => {
+export const deleteUserById = async (req, res) => {
   const userId = parseInt(req.params.id);
   try {
     const result = await UsersModel.delete(userId);
@@ -55,5 +55,3 @@ const deleteUserById = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-module.exports = { getAllUsers, getUserById, addUser, deleteUserById };

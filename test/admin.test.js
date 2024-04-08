@@ -1,5 +1,5 @@
-const adminController = require('../controllers/adminController');
-const AdminsModel = require('../models/admins.model');
+import adminController from '../controllers/adminController.js';
+import AdminsModel from '../models/admins.model.js';
 
 describe('Admin Controller', () => {
   describe('signup', () => {

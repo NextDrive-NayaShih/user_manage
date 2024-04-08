@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const jwt = require('jsonwebtoken');
-const AdminsModel = require('../models/admins.model'); // Import the AdminsModel
+import jwt from 'jsonwebtoken';
+import AdminsModel from '../models/admins.model.js'; // Import the AdminsModel
+
 
 app.set('secret', 'mysecretkey');
 
@@ -47,4 +48,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { signup, login };
+export { signup, login };

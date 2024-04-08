@@ -6,7 +6,4 @@ class MockPool {
     this.release = jest.fn();
   }
 }
-
-module.exports = {
-  Pool: MockPool,
-};
+export default { Pool: MockPool};

@@ -1,5 +1,5 @@
-const userController = require('../controllers/userController');
-const UsersModel = require('../models/users.model');
+import userController from '../controllers/userController.js';
+import UsersModel from '../models/users.model.js';
 
 describe('User Controller', () => {
     describe('getAllUsers', () => {

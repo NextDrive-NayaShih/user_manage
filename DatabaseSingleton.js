@@ -1,4 +1,5 @@
-const { Pool } = require('pg');
+import pkg from 'pg';
+const { Pool } = pkg;
 
 class PrivateDatabaseSingleton {
     constructor() {
@@ -79,4 +80,4 @@ class DatabaseSingleton {
         return DatabaseSingleton.instance;
     }
 }
-module.exports = DatabaseSingleton
+export default DatabaseSingleton;

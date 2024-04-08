@@ -1,5 +1,6 @@
-const format = require('pg-format')
-const BaseModel = require('./base.model')
+import  format  from 'pg-format';
+import BaseModel from './base.model.js';
+
 const TABLE = "admins";
 
 class AdminsModel extends BaseModel{
@@ -33,4 +34,5 @@ class AdminsModel extends BaseModel{
     }
 
 }
-module.exports = AdminsModel;
+
+export default AdminsModel;

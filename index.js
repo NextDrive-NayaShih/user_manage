@@ -1,8 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const authMiddleware = require('./middlewares/authMiddleware');
-const adminRoutes = require('./routes/adminRoutes');
-const userRoutes = require('./routes/userRoutes');
+import express from 'express';
+import bodyParser from 'body-parser';
+import authMiddleware from './middlewares/authMiddleware.js';
+import adminRoutes from './routes/adminRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+
 // const { initializeDB } = require('./DatabaseSingleton'); // Import the initializeDB function
 const app = express();
 const PORT = 3000;

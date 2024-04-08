@@ -1,4 +1,4 @@
-const dbConn = require('../DatabaseSingleton')
+import dbConn from '../DatabaseSingleton.js';
 class BaseModel {
     static async executeQuery(sql, values = null, dbClient = null) {
         const dbInstance = dbClient || dbConn.getInstance();
@@ -8,4 +8,4 @@ class BaseModel {
     }
 }
 
-module.exports = BaseModel;
+export default BaseModel;
