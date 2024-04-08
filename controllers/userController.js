@@ -1,26 +1,31 @@
+const UsersModel = require('../models/users.model'); // Import the AdminsModel
+const express = require('express');
+const app = express();
 
-const getAllUsers = async (res) => {
+app.set('secret', 'mysecretkey');
+
+const getAllUsers = async (req, res) => {
   try {
-    const result = await client.query('SELECT * FROM users');
-    const users = result.rows;
-    res.json(users);
-    client.release();
+    const result = await UsersModel.selectAll();
+    console.info("result:", result);
+    res.status(200)
+    result.rows.length > 0 ? res.json(result.rows) : res.json({});
+    return result.rows; // 返回结果数组
   } catch (err) {
     console.error('Error executing query', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error' })
   }
 };
 
 const getUserById = async (req, res) => {
   const userId = parseInt(req.params.id);
   try {
-    const result = await client.query('SELECT * FROM users WHERE id = $1', [userId]);
+    const result = await UsersModel.selectById(userId);
     const user = result.rows[0];
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
     res.json(user);
-    client.release();
   } catch (err) {
     console.error('Error executing query', err);
     res.status(500).json({ error: 'Internal server error' });
@@ -28,14 +33,12 @@ const getUserById = async (req, res) => {
 };
 
 const addUser = async (req, res) => {
-  const { name, nickname, age } = req.body;
   try {
-    const result = await client.query('INSERT INTO users (name, nickname, age) VALUES ($1, $2, $3) RETURNING id', [name, nickname, age]);
+    const result = await UsersModel.insert(req.body);
     const newUser = {
       id: result.rows[0].id,
     };
     res.json(newUser);
-    client.release();
   } catch (err) {
     console.error('Error executing query', err);
     res.status(500).json({ error: 'Internal server error' });
@@ -45,9 +48,8 @@ const addUser = async (req, res) => {
 const deleteUserById = async (req, res) => {
   const userId = parseInt(req.params.id);
   try {
-    await client.query('DELETE FROM users WHERE id = $1', [userId]);
+    const result = await UsersModel.delete(userId);
     res.json({ message: 'User deleted successfully' });
-    client.release();
   } catch (err) {
     console.error('Error executing query', err);
     res.status(500).json({ error: 'Internal server error' });

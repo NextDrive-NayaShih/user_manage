@@ -10,9 +10,6 @@ const PORT = 3000;
 app.set('secret', 'mysecretkey')
 app.use(bodyParser.json());
 
-//initialize db
-// initializeDB();
-
 // Mount admin routes
 app.use('/admin', adminRoutes);
 
